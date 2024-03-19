@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "myganngopy"
+version = "0.0.1"
+description = "MyGannGo ported to python"
+authors = ["ashercn97 <131724380+ashercn97@users.noreply.github.com>"]
+license = "n/a"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pytest-playwright = "^0.4.4"
+playwright = "^1.42.0"
+python-dotenv = "^1.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
