@@ -6,7 +6,6 @@ import asyncio
 from runner import main
 from playwright.async_api import async_playwright, Playwright
 import json
-import base64
 import time
 
 # ty chatgpt
@@ -34,7 +33,7 @@ async def download_pdf(page, url, save_path):
 
 
 
-async def get_pdf(page, file_path):
+async def get_pdf(page, filepath):
     cookies = await get_cookies(page)
     request_verification_token = await page.evaluate("""document.getElementsByName("__RequestVerificationToken")[0].value""")
 
