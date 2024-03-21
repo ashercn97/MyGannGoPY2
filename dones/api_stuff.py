@@ -1,15 +1,17 @@
 import requests
 import sys
 sys.path.append('./myganngopy')
-from utils import get_cookies
+from utils import get_cookies, NavNested
 import asyncio
 from runner import main
 from playwright.async_api import async_playwright, Playwright
 import json
 import time
+import base64
 
 # ty chatgpt
 async def download_pdf(page, url, save_path):
+
     # Navigate to the PDF URL
     await page.goto(url)
 
@@ -33,7 +35,7 @@ async def download_pdf(page, url, save_path):
 
 
 
-async def get_pdf(page, filepath):
+async def get_pdf(page, browser, filepath, semester):
     cookies = await get_cookies(page)
     request_verification_token = await page.evaluate("""document.getElementsByName("__RequestVerificationToken")[0].value""")
 
@@ -43,7 +45,23 @@ async def get_pdf(page, filepath):
         cookies_dict[c['name']] = c['value']
     
 
+    if semester == 1:
+        json_thing = "15975"
+    elif semester== 2:
+        json_thing= "15992"
+    else:
+        raise ValueError("Semester must be 1 or 2")
 
+
+    config = {'page': page, 'browser': browser, 'log': True, 'test': False}
+    navigation = NavNested(config)
+
+    await navigation.profile_dropdown.run("Profile_Dropdown_Profile")
+
+    url = page.url
+    url = url.split("https://gannacademy.myschoolapp.com/app/student")[1]
+    student_id = url.split('/')[1]
+    print("STUDENT ID: ", student_id)
 
     headers = {
         'authority': 'gannacademy.myschoolapp.com',
@@ -65,7 +83,7 @@ async def get_pdf(page, filepath):
 
     json_data = {
         'ReportId': '215',
-        'ReportParameters': '7574746:,:15992:,:7574746:,:',
+        'ReportParameters': f'{student_id}:,:{json_thing}:,:{student_id}:,:', # userid, 
         'Format': 'pdf',
         'GeneralReport': True,
     }
@@ -106,7 +124,7 @@ async def get_pdf(page, filepath):
 
 async def __test__(playwright):
     async def run(page, browser):
-        await get_pdf(page, "output.pdf")
+        await get_pdf(page=page, filepath="output.pdf", semester=1, browser=browser)
 
     await main(run)
 

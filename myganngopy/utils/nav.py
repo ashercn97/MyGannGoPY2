@@ -115,3 +115,13 @@ class NavNested:
             ]
 
         )
+
+        self.profile_dropdown = NavParent(
+            name="Profile_Dropdown",
+            config=self.config,
+            action_type="click",
+            xpath="xpath=/html/body/div[2]/div/div[6]/div[1]/div[1]/div/div/div[4]/div/ul/li[4]/a",
+            children=[
+                NavItem(name="Profile_Dropdown_Profile", xpath="xpath=/html/body/div[2]/div/div[6]/div[1]/div[1]/div/div/div[4]/div/ul/li[4]/div[2]/ul/li[1]/a", action_type="click"),
+            ]
+        )
